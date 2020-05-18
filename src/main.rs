@@ -5,6 +5,7 @@ use walkdir::WalkDir;
 use std::io;
 use std::fs;
 
+
 #[derive(Debug, Clone, Copy)]
 struct FileTree {
     name: String,

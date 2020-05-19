@@ -1,29 +1,4 @@
 
-fn dir_tree(p: &Path, file_tree: &mut FileTree) -> io::Result<()> {
-    if p.is_dir() {
-        file_tree.dir_name = p.to_str().unwrap().to_string();
-        for entry in fs::read_dir(p)? {
-            let entry = entry?;
-            let path = entry.path();
-            if path.is_dir() {
-                // let mut child = FileTree{
-                //     dir_name: path.to_str().unwrap().to_string(),
-                //     children:vec![],
-                //     files: [].to_vec()
-                // };
-                // file_tree.children.push(Some(Box::new(child)));
-                dir_tree(&path, &mut child)?;
-            } else {
-                // cb(&entry);
-                let p = path.to_str().unwrap().to_string();
-                file_tree.files.push(p);
-            }
-        }
-    }
-    Ok(())
-}
-
-
 fn read_dir(path: &Path) -> io::Result<()> {
     let mut entries = fs::read_dir(path)?
         .map(|res| res.map(|e| e.path()))

@@ -1,5 +1,5 @@
 [package]
-name = "wiki"
+name = "insighter"
 version = "0.1.0"
 authors = ["zxc <codehackfox@gmail.com>"]
 edition = "2018"

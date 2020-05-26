@@ -22,12 +22,12 @@ pub fn run(path: &Path) {
     let res = walk_dir(path);
     let files = res.unwrap();
 
-    let mut outline = String::from("===========目录结构============\n\n");
+    let mut outline = String::from("## 目录结构\n\n");
 
-    let mut content = String::from("\n===========文件结构===========\n");
+    let mut content = String::from("\n## 文件结构\n");
 
     for file in files {
-        let name = padding_space(file.depth) + file.name.as_str() + "\n";
+        let name = padding_space(file.depth + 1) + file.name.as_str() + "\n";
         outline.push_str(name.as_str());
 
         if file.suffix == "rs" {
@@ -46,7 +46,9 @@ pub fn run(path: &Path) {
     }
 
     let w = outline + content.as_str();
-    writer(w).expect("写入outline失败");
+    let file_name = path.file_name().unwrap().to_string_lossy().into_owned() + ".md";
+
+    writer(w, file_name.as_str()).expect("写入outline失败");
     println!("解析目录完毕")
 }
 
@@ -112,9 +114,8 @@ fn read_outline(path: String, depath: usize) -> Result<String, io::Error> {
 }
 
 // 写入文件内容
-fn writer(content: String) -> io::Result<()> {
+fn writer(content: String, file_name: &str) -> io::Result<()> {
     let dir_name = "output";
-    let file_name = "outline.md";
 
     let output_file = String::from(dir_name) + "/" + file_name;
 

@@ -1,7 +1,7 @@
 use super::utils::{is_hidden, padding_space};
 use std::ffi::OsStr;
 use std::fs::File;
-use std::fs::OpenOptions;
+use std::fs::{self, OpenOptions};
 use std::io::prelude::*;
 use std::io::{self, BufReader};
 use std::path::Path;
@@ -40,7 +40,7 @@ pub fn run(path: &Path) {
                 + "\n";
 
             content.push_str(name.as_str());
-            let res = read_rs_outline(file.path, file.depth + 1);
+            let res = read_outline(file.path, file.depth + 1);
             content.push_str(res.unwrap().as_str());
         }
     }
@@ -82,19 +82,19 @@ fn walk_dir(path: &Path) -> Result<Vec<FileEntry>, io::Error> {
 }
 
 // 读取文件
-fn reader(path: String) -> io::Result<()> {
-    let f = File::open(path)?;
-    let f = BufReader::new(f);
+// fn reader(path: String) -> io::Result<()> {
+//     let f = File::open(path)?;
+//     let f = BufReader::new(f);
 
-    for line in f.lines() {
-        if let Ok(line) = line {
-            println!("{:?}", line);
-        }
-    }
-    Ok(())
-}
+//     for line in f.lines() {
+//         if let Ok(line) = line {
+//             println!("{:?}", line);
+//         }
+//     }
+//     Ok(())
+// }
 
-fn read_rs_outline(path: String, depath: usize) -> Result<String, io::Error> {
+fn read_outline(path: String, depath: usize) -> Result<String, io::Error> {
     let f = File::open(path)?;
     let f = BufReader::new(f);
 
@@ -113,14 +113,22 @@ fn read_rs_outline(path: String, depath: usize) -> Result<String, io::Error> {
 
 // 写入文件内容
 fn writer(content: String) -> io::Result<()> {
-    let filename = "outline.md";
+    let dir_name = "output";
+    let file_name = "outline.md";
+
+    let output_file = String::from(dir_name) + "/" + file_name;
+
+    if !Path::new(&dir_name).exists() {
+        fs::create_dir(dir_name)?;
+    }
+
     let file = OpenOptions::new()
         .read(true)
         .write(true)
         .create(true)
         // .append(true)
         .truncate(true)
-        .open(filename);
+        .open(output_file);
 
     match file {
         Ok(mut stream) => {

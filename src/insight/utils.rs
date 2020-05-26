@@ -1,4 +1,4 @@
-use walkdir::{DirEntry};
+use walkdir::DirEntry;
 
 // 设计隐藏的文件或目录
 pub fn is_hidden(entry: &DirEntry) -> bool {

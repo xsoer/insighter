@@ -2,24 +2,53 @@ mod insight;
 
 use clap::{load_yaml, App};
 use insight::rust::run;
-// use std::env;
+use std::collections::HashMap;
+use std::env;
 use std::path::Path;
 
 fn main() {
-    let dir = options();
+    let options = cli_options();
+    let dir = options.get("dir").unwrap().as_str();
+    let output = options.get("output").unwrap().as_str();
 
-    let path = Path::new(dir.as_str());
-    if path.is_relative() {
-        panic!("路径必须是绝对的，不能是相对路径")
+    let mut cur_path = env::current_dir().unwrap();
+
+    // 判断当前路径
+    let path = if dir.starts_with("/") {
+        Path::new(dir)
+    } else {
+        cur_path.push(dir);
+        cur_path.as_path()
+    };
+
+    if !path.exists() {
+        println!("文件夹不存在:{:#?}", path);
+        return;
     }
 
-    run(path);
+    run(path, output);
 }
 
-fn options() -> String {
-    let yaml = load_yaml!("cli.yml");
+// 命令执行选项
+fn cli_options() -> HashMap<String, String> {
+    let yaml = load_yaml!("conf/cli.yml");
     let matches = App::from(yaml).get_matches();
-    String::from(matches.value_of("DIR").unwrap())
+
+    let mut options = HashMap::new();
+
+    options.insert(
+        "dir".to_string(),
+        matches.value_of("DIR").unwrap().to_string(),
+    );
+    options.insert(
+        "output".to_string(),
+        matches
+            .value_of("output")
+            .unwrap_or("insighter.md")
+            .to_string(),
+    );
+
+    options
 }
 
 // fn arg() {

@@ -17,7 +17,7 @@ pub fn is_hidden(entry: &DirEntry) -> bool {
 pub fn padding_space(i: usize) -> String {
     let mut s = String::new();
     for _n in 0..i * 4 {
-        s += " "
+        s += " ";
     }
     s
 }

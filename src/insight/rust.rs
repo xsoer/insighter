@@ -1,7 +1,7 @@
 use super::utils::{is_hidden, padding_space};
 use std::ffi::OsStr;
 use std::fs::File;
-use std::fs::{self, OpenOptions};
+use std::fs::OpenOptions;
 use std::io::prelude::*;
 use std::io::{self, BufReader};
 use std::path::Path;
@@ -18,7 +18,7 @@ struct FileEntry {
 }
 
 // 进行路径遍历，打印文件结构及代码框架
-pub fn run(path: &Path) {
+pub fn run(path: &Path, output: &str) {
     let res = walk_dir(path);
     let files = res.unwrap();
 
@@ -46,9 +46,9 @@ pub fn run(path: &Path) {
     }
 
     let w = outline + content.as_str();
-    let file_name = path.file_name().unwrap().to_string_lossy().into_owned() + ".md";
+    // let file_name = path.file_name().unwrap().to_string_lossy().into_owned() + ".md";
 
-    writer(w, file_name.as_str()).expect("写入outline失败");
+    writer(w, output).expect("写入outline失败");
     println!("解析目录完毕")
 }
 
@@ -79,7 +79,6 @@ fn walk_dir(path: &Path) -> Result<Vec<FileEntry>, io::Error> {
         };
         files.push(file);
     }
-    // println!("{:#?}", files);
     Ok(files)
 }
 
@@ -115,13 +114,13 @@ fn read_outline(path: String, depath: usize) -> Result<String, io::Error> {
 
 // 写入文件内容
 fn writer(content: String, file_name: &str) -> io::Result<()> {
-    let dir_name = "output";
+    // let dir_name = "output";
 
-    let output_file = String::from(dir_name) + "/" + file_name;
-
-    if !Path::new(&dir_name).exists() {
-        fs::create_dir(dir_name)?;
-    }
+    // let output_file = String::from(dir_name) + "/" + file_name;
+    //
+    // if !Path::new(&dir_name).exists() {
+    // fs::create_dir(dir_name)?;
+    // }
 
     let file = OpenOptions::new()
         .read(true)
@@ -129,7 +128,7 @@ fn writer(content: String, file_name: &str) -> io::Result<()> {
         .create(true)
         // .append(true)
         .truncate(true)
-        .open(output_file);
+        .open(file_name);
 
     match file {
         Ok(mut stream) => {

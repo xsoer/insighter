@@ -1,0 +1,14 @@
+name: insighter
+version: "0.1.0"
+author: hackfox <codehackfox@gmail.com>
+about: insight code source
+args:
+    - DIR:
+        help: Sets the source code path
+        required: true
+        index: 1
+    - output:
+        short: o
+        long: ouput
+        help: ouput file name
+        takes_value: true

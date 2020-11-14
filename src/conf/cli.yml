@@ -9,6 +9,6 @@ args:
         index: 1
     - output:
         short: o
-        long: ouput
-        help: ouput file name
+        long: output
+        help: output file name
         takes_value: true

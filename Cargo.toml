@@ -8,4 +8,4 @@ edition = "2018"
 
 [dependencies]
 walkdir = "2.3.1"
-clap = {version="2.33.1",features=["yaml"]}
+clap = {version="2.33.3",features=["yaml"]}

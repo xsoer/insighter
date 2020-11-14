@@ -50,11 +50,3 @@ fn cli_options() -> HashMap<String, String> {
 
     options
 }
-
-// fn arg() {
-// let args: Vec<String> = env::args().collect();
-// if args.len() < 2 {
-// println!("参数必须至少是2个！");
-// return;
-// }
-// }

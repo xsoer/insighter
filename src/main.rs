@@ -1,7 +1,7 @@
 mod insight;
 
 use clap::{load_yaml, App};
-use insight::rust::run;
+use insight::rust;
 use std::collections::HashMap;
 use std::env;
 use std::path::Path;
@@ -26,7 +26,7 @@ fn main() {
         return;
     }
 
-    run(path, output);
+    rust::run(path, output);
 }
 
 // 命令执行选项
@@ -38,13 +38,13 @@ fn cli_options() -> HashMap<String, String> {
 
     options.insert(
         "dir".to_string(),
-        matches.value_of("DIR").unwrap().to_string(),
+        matches.value_of("DIR").unwrap_or("./").to_string(),
     );
     options.insert(
         "output".to_string(),
         matches
             .value_of("output")
-            .unwrap_or("insighter.md")
+            .unwrap_or("outlines.md")
             .to_string(),
     );
 

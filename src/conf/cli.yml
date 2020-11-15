@@ -3,10 +3,11 @@ version: "0.1.0"
 author: hackfox <codehackfox@gmail.com>
 about: insight code source
 args:
-    - DIR:
+    - dir:
+        short: d
+        long: dir
+        # index: 1
         help: Sets the source code path
-        required: true
-        index: 1
     - output:
         short: o
         long: output

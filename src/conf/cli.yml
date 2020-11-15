@@ -1,13 +1,13 @@
 name: insighter
 version: "0.1.0"
 author: hackfox <codehackfox@gmail.com>
-about: insight code source
+about: insight source code  outline
 args:
     - dir:
         short: d
         long: dir
-        # index: 1
         help: Sets the source code path
+        takes_value: true
     - output:
         short: o
         long: output

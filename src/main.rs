@@ -1,8 +1,8 @@
+mod conf;
 mod insight;
 
-use clap::{load_yaml, App};
+use conf::cmd::cli_options;
 use insight::rust;
-use std::collections::HashMap;
 use std::env;
 use std::path::Path;
 
@@ -12,8 +12,6 @@ fn main() {
     let output = options.get("output").unwrap().as_str();
 
     let mut cur_path = env::current_dir().unwrap();
-
-    // 判断当前路径
     let path = if dir.starts_with("/") {
         Path::new(dir)
     } else {
@@ -22,31 +20,9 @@ fn main() {
     };
 
     if !path.exists() {
-        println!("文件夹不存在:{:#?}", path);
-        return;
+        println!("^<o>^ 目标文件夹不存在:{:#?}", path);
+        return
     }
 
     rust::run(path, output);
-}
-
-// 命令执行选项
-fn cli_options() -> HashMap<String, String> {
-    let yaml = load_yaml!("conf/cli.yml");
-    let matches = App::from(yaml).get_matches();
-
-    let mut options = HashMap::new();
-
-    options.insert(
-        "dir".to_string(),
-        matches.value_of("DIR").unwrap_or("./").to_string(),
-    );
-    options.insert(
-        "output".to_string(),
-        matches
-            .value_of("output")
-            .unwrap_or("outlines.md")
-            .to_string(),
-    );
-
-    options
 }
